@@ -449,6 +449,6 @@ PlayerSettings:
   WebGL::template: APPLICATION:Default
   additionalIl2CppArgs::additionalIl2CppArgs: 
   cloudProjectId: bf530401-9c41-4a61-bdd0-df72bf2dc3a2
-  projectName: LD34
+  projectName: Junk Tree
   organizationId: zlos
   cloudEnabled: 0
