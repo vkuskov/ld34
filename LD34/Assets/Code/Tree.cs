@@ -13,10 +13,6 @@ public class Tree : MonoBehaviour
 
     private Leaf root;
 
-    private List<Ray> testRays = new List<Ray>();
-    private List<bool> testHits = new List<bool>();
-
-
     private class RaycastSorter : IComparer<RaycastHit>
     {
         public int Compare(RaycastHit x, RaycastHit y)
@@ -38,8 +34,6 @@ public class Tree : MonoBehaviour
         // We can do "right" thing, implement recursive search and then check if we can fit next leaf.
         // But we already have all data in physics engine that we will use anyway.
         // So we need to raytrace tree from top and easily find best element!
-        testRays.Clear();
-        testHits.Clear();
         x = Mathf.Round(x);
         float searchLeft = x;
         float searchRight = x;        
@@ -71,20 +65,13 @@ public class Tree : MonoBehaviour
 
     private bool CheckPlace(LeafData leafData, float x, out Leaf leaf, out float shift)
     {
-        Leaf hit = TraceLeaf(x);
+        Leaf hit = TraceLeaf(x, leafData);
         if (hit != null)
         {
-            if (CheckIfCanFit(hit, x, leafData))
-            {
-                leaf = hit;
-                shift = x;
-                return true;
-            }
+            leaf = hit;
+            shift = x;
+            return true;
         }
-        else
-        {
-            Debug.LogFormat("Place {0} failed", x);
-        }        
         leaf = null;
         shift = 0;
         return false;
@@ -97,36 +84,18 @@ public class Tree : MonoBehaviour
         return x - leafInTreeSpace.x;
     }
 
-    private bool CheckIfCanFit(Leaf parent, float x, LeafData leafData)
+    private Leaf TraceLeaf(float x, LeafData data)
     {
-        return true;
-    }
-
-    // Generate too musch garbadge but we're ok with that for now
-    private Leaf TraceLeaf(float x)
-    {
-        Vector3 startPoint = new Vector3(x, height, 0);
-        Ray ray = new Ray(startPoint, Vector3.down);
-        testRays.Add(ray);
+        Vector3 startPoint = new Vector3(x, height, 0) + data.mesh.bounds.center;
         startPoint = transform.TransformVector(startPoint);
-        RaycastHit[] hits = Physics.RaycastAll(ray, height, layerMask);
-        if (hits != null && hits.Length > 0)
+        RaycastHit hit;
+        if (Physics.BoxCast(startPoint, data.mesh.bounds.extents, Vector3.down, out hit, transform.rotation, height, layerMask))
         {
-            testHits.Add(true);
-            List<RaycastHit> sortedHits = new List<RaycastHit>(hits);
-            sortedHits.Sort(new RaycastSorter());
-            foreach (RaycastHit hit in sortedHits)
+            LeafBackLink link = hit.collider.GetComponent<LeafBackLink>();
+            if (link != null && link.link != null)
             {
-                LeafBackLink link = hit.collider.GetComponent<LeafBackLink>();
-                if (link != null)
-                {
-                    return link.link;
-                }
+                return link.link;
             }
-        }
-        else
-        {
-            testHits.Add(false);
         }
         return null;
     }
@@ -138,27 +107,14 @@ public class Tree : MonoBehaviour
             float x = Random.Range(-50.0f, 50.0f);
             Leaf parent = null;
             float shift = 0;
-            Debug.LogFormat("Try to find place {0}", x);
             if (FindBestPlace(rootLeaf, x, out parent, out shift))
             {
-                Debug.LogFormat("Found! {0}", shift);
                 parent.AddLeaf(Leaf.Create(rootLeaf), shift);
-            }
-            else
-            {
-                Debug.Log("Not found");
             }
         }
     }
 
     private void OnDrawGizmos()
     {
-        UnityEngine.Assertions.Assert.AreEqual(testRays.Count, testHits.Count);
-        for (int i = 0; i < testRays.Count; ++i)
-        {
-            Ray ray = testRays[i];
-            Gizmos.color = testHits[i] ? Color.green : Color.red;
-            Gizmos.DrawLine(ray.origin, ray.origin + ray.direction * height);
-        }
     }
 }

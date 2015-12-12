@@ -8,6 +8,14 @@ public class Leaf : MonoBehaviour
     private LeafData sourceData;
     private List<Leaf> leafs;
 
+    public LeafData Source
+    {
+        get
+        {
+            return sourceData;
+        }
+    }
+
     private void Start()
     {
         leafs = new List<Leaf>();
