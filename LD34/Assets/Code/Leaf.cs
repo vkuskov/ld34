@@ -59,8 +59,8 @@ public class Leaf : MonoBehaviour
         meshFilter.mesh = data.mesh;        
         MeshRenderer meshRenderer = meshGO.AddComponent<MeshRenderer>();
         meshRenderer.material = data.material;
-        MeshCollider collider = meshGO.AddComponent<MeshCollider>();
-        collider.convex = true;
+        BoxCollider collider = meshGO.AddComponent<BoxCollider>();
+        meshGO.layer = LayerMask.NameToLayer("Leafs");
         Leaf leaf = go.AddComponent<Leaf>();
         leaf.sourceData = data;
         meshGO.transform.rotation = Quaternion.Euler(-90.0f, 90, 0);
@@ -69,17 +69,15 @@ public class Leaf : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.green;
         for (int i = 0; i < worldPoints.Count; ++i)
         {
+            
             if (leafs[i] != null)
             {
-                Gizmos.color = Color.green;
+                Gizmos.DrawLine(transform.position, leafs[i].transform.position);
             }
-            else
-            {
-                Gizmos.color = Color.blue;
-            }
-            Gizmos.DrawLine(transform.position, worldPoints[i]);
+            
         }
     }
 }
