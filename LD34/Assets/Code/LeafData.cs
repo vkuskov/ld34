@@ -25,7 +25,7 @@ public class LeafData : ScriptableObject
         {
             path = path.Replace("/" + Path.GetFileName(AssetDatabase.GetAssetPath(Selection.activeObject)), "");
         }
-        string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath(path + "/New " + typeof(LeafData).Name + ".asset");
+        string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath(path + "/New Leaf Data.asset");
         AssetDatabase.CreateAsset(data, assetPathAndName);
         AssetDatabase.SaveAssets();
         EditorUtility.FocusProjectWindow();

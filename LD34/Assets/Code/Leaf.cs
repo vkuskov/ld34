@@ -60,6 +60,7 @@ public class Leaf : MonoBehaviour
         MeshRenderer meshRenderer = meshGO.AddComponent<MeshRenderer>();
         meshRenderer.material = data.material;
         MeshCollider collider = meshGO.AddComponent<MeshCollider>();
+        collider.convex = true;
         Leaf leaf = go.AddComponent<Leaf>();
         leaf.sourceData = data;
         meshGO.transform.rotation = Quaternion.Euler(-90.0f, 90, 0);
