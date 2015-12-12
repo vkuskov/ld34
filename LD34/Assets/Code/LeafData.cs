@@ -9,7 +9,7 @@ public class LeafData : ScriptableObject
 {
     public Mesh mesh;
     public Material material;
-    public List<Vector3> childPoints;
+    public float height = 1.0f;
 
 #if UNITY_EDITOR
     [MenuItem("Assets/Create/Leaf Data")]
