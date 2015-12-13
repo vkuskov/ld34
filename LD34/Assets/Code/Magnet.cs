@@ -105,6 +105,8 @@ public class Magnet : MonoBehaviour {
                 }
                 break;
             case State.DropOnTree:
+                float fixedTargetPositionY = targetWorldPosition.y - scrap.Data.mesh.bounds.extents.y * 2.0f;
+                Vector3 fixedTargetPosition = targetWorldPosition - new Vector3(0, fixedTargetPositionY, 0);
                 direction = targetWorldPosition - transform.position;
                 if (direction.sqrMagnitude <= 1.0f)
                 {
