@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7933c2bc8f96ab4992025913922d218, type: 3}
+  m_Name: Car_Rust
+  m_EditorClassIdentifier: 
+  mesh: {fileID: 4300000, guid: 1a7a88f076914a540b6a11904b1a6bc7, type: 3}
+  material: {fileID: 2100000, guid: 3f663df4e77d5a847986b5ee1696711c, type: 2}

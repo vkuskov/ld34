@@ -1248,6 +1248,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6928113a828397346ab9d76bdb0a67ae, type: 2}
   - {fileID: 11400000, guid: 50c19613ea711a74a896f21b50d1d232, type: 2}
   - {fileID: 11400000, guid: f19b4d3d456412049aa8590130321699, type: 2}
+  - {fileID: 11400000, guid: 3a70ff818eb8f084f80b589bb45b81f7, type: 2}
+  - {fileID: 11400000, guid: 62c3d1fbb75b1ee498e0d29b40e34fd5, type: 2}
+  - {fileID: 11400000, guid: 6cf7d41a056ab4d4c98a969e87500af2, type: 2}
+  - {fileID: 11400000, guid: 8da6c6b7af33ee44c969d8662eee0fa2, type: 2}
   spawnPoint: {fileID: 1919165780}
   scrapRoot: {fileID: 1386264514}
 --- !u!65 &1661541606
