@@ -102,7 +102,7 @@ public class Tree : MonoBehaviour
 
     private void Update()
     {
-        if (Input.anyKeyDown)
+        /*if (Input.anyKeyDown)
         {
             float x = Random.Range(-50.0f, 50.0f);
             Leaf parent = null;
@@ -111,7 +111,7 @@ public class Tree : MonoBehaviour
             {
                 parent.AddLeaf(Leaf.Create(rootLeaf), shift);
             }
-        }
+        }*/
     }
 
     private void OnDrawGizmos()

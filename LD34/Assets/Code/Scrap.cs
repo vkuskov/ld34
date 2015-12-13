@@ -4,6 +4,11 @@ using System.Collections;
 public class Scrap : MonoBehaviour {
     private LeafData sourceData;
 
+    public LeafData Data
+    {
+        get { return sourceData; }
+    }
+
     public static Scrap Create(LeafData data)
     {
         GameObject rootGO = new GameObject();

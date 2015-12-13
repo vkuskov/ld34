@@ -1,5 +1,20 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &116102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 412204}
+  m_Layer: 0
+  m_Name: JunkTree
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &151072
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +26,7 @@ GameObject:
   m_Layer: 0
   m_Name: Conveyor
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -28,7 +43,7 @@ GameObject:
   m_Layer: 10
   m_Name: Destroyer
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -49,7 +64,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &184468
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -57,7 +72,7 @@ GameObject:
   - 4: {fileID: 465968}
   - 114: {fileID: 11488838}
   m_Layer: 0
-  m_Name: Tree
+  m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -109,6 +124,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &412204
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 116102}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 465968}
+  m_Father: {fileID: 451308}
+  m_RootOrder: 1
 --- !u!4 &413404
 Transform:
   m_ObjectHideFlags: 1
@@ -170,8 +198,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 465968}
   - {fileID: 452696}
+  - {fileID: 412204}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &452696
@@ -181,12 +209,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 151072}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -5.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 435306}
   m_Father: {fileID: 451308}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!4 &465968
 Transform:
   m_ObjectHideFlags: 1
@@ -197,7 +225,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 451308}
+  m_Father: {fileID: 412204}
   m_RootOrder: 0
 --- !u!65 &6525374
 BoxCollider:
@@ -206,7 +234,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 152472}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 5, z: 6}
@@ -251,8 +279,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d80b4c3dab8beac47b9ea2c848029926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
-  moreScrapCD: 1.5
+  moveSpeed: 7
+  minScrapCD: 1.2
+  maxScrapCD: 1.5
+  test: {fileID: 11400000, guid: d149407095b25cf478312fa444ff8ee1, type: 2}
   spawnPoint: {fileID: 413404}
   scrapRoot: {fileID: 450586}
 --- !u!1001 &100100000

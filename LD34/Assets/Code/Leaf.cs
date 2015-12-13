@@ -60,7 +60,6 @@ public class Leaf : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        
         for (int i = 0; i < leafs.Count; ++i)
         {
             if (leafs[i] != null)
