@@ -11,6 +11,7 @@ public class ConveyorBelt : MonoBehaviour {
     public Transform spawnPoint;
     public Transform scrapRoot;
 
+    private LeafData nextScrap;
     private float scrapCD = 0;
 
 	void Update ()
@@ -27,12 +28,22 @@ public class ConveyorBelt : MonoBehaviour {
 
     private void AddMoreScrap()
     {
-        Scrap scrap = Scrap.Create(possibleScrap[Random.Range(0, possibleScrap.Length)]);
-        Mover mover = scrap.gameObject.AddComponent<Mover>();
-        mover.direction = Vector3.right;
-        mover.speed = moveSpeed;
-        scrap.transform.SetParent(scrapRoot);
-        scrap.transform.position = spawnPoint.transform.position;
-        scrapCD = Random.Range(minScrapCD, maxScrapCD);
+        if (nextScrap == null)
+        {
+            nextScrap = possibleScrap[Random.Range(0, possibleScrap.Length)];
+        }
+        Bounds bounds = nextScrap.mesh.bounds;
+        // We need to rotate bounding box there. But Unity3D doesn't have function for this and I don't want to do it.
+        if (!Physics.CheckBox(nextScrap.mesh.bounds.center + spawnPoint.transform.position, nextScrap.mesh.bounds.extents * 3.0f))
+        {
+            Scrap scrap = Scrap.Create(nextScrap);
+            Mover mover = scrap.gameObject.AddComponent<Mover>();
+            mover.direction = Vector3.right;
+            mover.speed = moveSpeed;
+            scrap.transform.SetParent(scrapRoot);
+            scrap.transform.position = spawnPoint.transform.position;
+            scrapCD = Random.Range(minScrapCD, maxScrapCD);
+            nextScrap = null;
+        }
     }
 }
