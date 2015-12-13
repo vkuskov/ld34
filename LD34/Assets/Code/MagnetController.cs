@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class MagnetController : MonoBehaviour {
+    public float downSpeed = 50.0f;
+    public float upSpeed = 20.0f;
+    public float horizontalSpeed = 30.0f;
 
     public Magnet left;
     public Magnet right;
@@ -9,8 +12,16 @@ public class MagnetController : MonoBehaviour {
 
 	void Start()
     {
-        left.tree = tree;
-        right.tree = tree;
+        SetupMagnet(left);
+        SetupMagnet(right);
+    }
+
+    private void SetupMagnet(Magnet magnet)
+    {
+        magnet.tree = tree;
+        magnet.downSpeed = downSpeed;
+        magnet.upSpeed = upSpeed;
+        magnet.horizontalSpeed = horizontalSpeed;
     }
 
 	void Update ()

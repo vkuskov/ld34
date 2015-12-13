@@ -4,8 +4,6 @@ using System.Collections;
 [RequireComponent(typeof(MagnetBackLink))]
 [RequireComponent(typeof(Collider))]
 public class MagnetCatch : MonoBehaviour {
-    public LayerMask beltCollisionLayer;
-
     private Magnet magnet;
 
 	void Start ()

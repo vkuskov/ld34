@@ -2,9 +2,14 @@
 using System.Collections;
 
 public class Magnet : MonoBehaviour {
+    [HideInInspector]
     public float downSpeed = 50.0f;
+    [HideInInspector]
     public float upSpeed = 20.0f;
+    [HideInInspector]
     public float horizontalSpeed = 30.0f;
+    public float minPosition;
+    public float maxPosition;
     [HideInInspector]
     public Tree tree;
 
@@ -20,14 +25,12 @@ public class Magnet : MonoBehaviour {
         MoveToPosition,
         DropOnTree,
         MoveFromTree,
-        MoveToSourcePosition,
+        MoveToNewPosition,
         MoveToFront,
     }
 
     private State state = State.Stay;
 
-    private Leaf targetLeaf;
-    private float targetLeafShift;
     private Vector3 targetWorldPosition;
 
     public bool IsInWork
@@ -44,6 +47,7 @@ public class Magnet : MonoBehaviour {
     }
 
     // Big and shitty state machine
+    // It's REALLY shitty. No time to do it right.
     void FixedUpdate()
     {
         Vector3 direction;
@@ -61,12 +65,9 @@ public class Magnet : MonoBehaviour {
                     transform.localPosition = new Vector3(transform.localPosition.x, 0, transform.localPosition.z);
                     if (scrap != null)
                     {
-                        if (tree.FindBestPlace(scrap.Data, transform.position.x, out targetLeaf, out targetLeafShift))
+                        if (tree.FindBestPlace(scrap.Data, transform.position.x, out targetWorldPosition))
                         {
                             state = State.MoveToBack;
-                            // We should find better way to do it
-                            Vector3 positionInLeafSpace = new Vector3(targetLeafShift, scrap.Data.height, 0);
-                            targetWorldPosition = targetLeaf.transform.TransformVector(positionInLeafSpace);
                         }
                         else
                         {
@@ -108,7 +109,7 @@ public class Magnet : MonoBehaviour {
                 {
                     transform.position = targetWorldPosition;
                     state = State.MoveFromTree;
-                    targetLeaf.AddLeaf(Leaf.Create(scrap.Data), targetLeafShift);
+                    tree.AddLeaf(scrap.Data, targetWorldPosition);
                     Destroy(scrap.gameObject);
                     scrap = null;
                 }
@@ -122,15 +123,17 @@ public class Magnet : MonoBehaviour {
                 if (transform.localPosition.y >= 0)
                 {
                     transform.localPosition = new Vector3(transform.localPosition.x, 0, transform.localPosition.z);
-                    state = State.MoveToSourcePosition;
+                    state = State.MoveToNewPosition;
+                    startPoisition.x = transform.position.x;
                 }
                 break;
-            case State.MoveToSourcePosition:
+            case State.MoveToNewPosition:
                 direction = horizontalBackPosition - transform.position;
                 if (direction.sqrMagnitude <= 1.0f)
                 {
                     transform.position = horizontalBackPosition;
                     state = State.MoveToFront;
+                    startPoisition.x = Random.Range(minPosition, maxPosition);
                 }
                 else
                 {

@@ -2,13 +2,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(MeshRenderer))]
 public class Leaf : MonoBehaviour
 {
     private LeafData sourceData;
-    private List<Leaf> leafs;
 
-    public LeafData Source
+    public LeafData Data
     {
         get
         {
@@ -18,15 +16,6 @@ public class Leaf : MonoBehaviour
 
     private void Start()
     {
-        leafs = new List<Leaf>();
-    }
-
-    public void AddLeaf(Leaf leaf, float x)
-    {
-        leafs.Add(leaf);
-        leaf.transform.SetParent(transform);
-        leaf.transform.localPosition = new Vector3(x, sourceData.height, 0); ;
-        leaf.name = string.Format("Leaf #{0}", leafs.Count);
     }
 
     private void Update()
@@ -56,18 +45,6 @@ public class Leaf : MonoBehaviour
         LeafBackLink backLink = meshGO.AddComponent<LeafBackLink>();
         backLink.link = leaf;
         return leaf;
-    }
-
-    private void OnDrawGizmos()
-    {
-        for (int i = 0; i < leafs.Count; ++i)
-        {
-            if (leafs[i] != null)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(transform.position, leafs[i].transform.position);
-            }
-        }
     }
 
 }

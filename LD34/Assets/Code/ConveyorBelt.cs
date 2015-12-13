@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 public class ConveyorBelt : MonoBehaviour {
     public float moveSpeed = 2.0f;
-    public float minScrapCD = 1.2f;
+    public float minScrapCD = 1.0f;
     public float maxScrapCD = 1.5f;
 
-    public LeafData test;
+    public LeafData[] possibleScrap;
 
     public Transform spawnPoint;
     public Transform scrapRoot;
@@ -27,7 +27,7 @@ public class ConveyorBelt : MonoBehaviour {
 
     private void AddMoreScrap()
     {
-        Scrap scrap = Scrap.Create(test);
+        Scrap scrap = Scrap.Create(possibleScrap[Random.Range(0, possibleScrap.Length)]);
         Mover mover = scrap.gameObject.AddComponent<Mover>();
         mover.direction = Vector3.right;
         mover.speed = moveSpeed;

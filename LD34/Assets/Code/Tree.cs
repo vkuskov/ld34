@@ -5,13 +5,12 @@ using Random = UnityEngine.Random;
 
 public class Tree : MonoBehaviour
 {
-    public LeafData rootLeaf;
     public float sizeInOneSide = 50.0f;
     public float searchStep = 1.0f;
     public float height = 50.0f;
     public LayerMask layerMask;
 
-    private Leaf root;
+    private List<Leaf> leafs = new List<Leaf>();
 
     private class RaycastSorter : IComparer<RaycastHit>
     {
@@ -21,19 +20,8 @@ public class Tree : MonoBehaviour
         }
     }
 
-    private void Start()
+    public bool FindBestPlace(LeafData leafData, float x, out Vector3 positionInWorld)
     {
-        root = Leaf.Create(rootLeaf);
-        root.transform.SetParent(transform);
-        root.transform.localPosition = Vector3.zero;
-        root.name = "Tree Root";
-    }
-
-    public bool FindBestPlace(LeafData leafData, float x, out Leaf leaf, out float shift)
-    {
-        // We can do "right" thing, implement recursive search and then check if we can fit next leaf.
-        // But we already have all data in physics engine that we will use anyway.
-        // So we need to raytrace tree from top and easily find best element!
         x = Mathf.Round(x);
         float searchLeft = x;
         float searchRight = x;        
@@ -41,50 +29,35 @@ public class Tree : MonoBehaviour
         {
             if (searchLeft > -sizeInOneSide)
             {
-                if (CheckPlace(leafData, searchLeft, out leaf, out shift))
+                if (CheckPlace(leafData, searchLeft, out positionInWorld))
                 {
-                    shift = ToLocalSpace(leaf, shift);
                     return true;
                 }
                 searchLeft -= searchStep;
             }
             if (searchRight < sizeInOneSide)
             {
-                if (CheckPlace(leafData, searchRight, out leaf, out shift))
+                if (CheckPlace(leafData, searchRight, out positionInWorld))
                 {
-                    shift = ToLocalSpace(leaf, shift);
                     return true;
                 }
                 searchRight += searchStep;
             }
         }
-        leaf = null;
-        shift = 0;
+        positionInWorld = Vector3.zero;
         return false;
     }
 
-    private bool CheckPlace(LeafData leafData, float x, out Leaf leaf, out float shift)
+    private bool CheckPlace(LeafData leafData, float x, out Vector3 positionInWorld)
     {
-        Leaf hit = TraceLeaf(x, leafData);
-        if (hit != null)
+        if (TraceLeaf(x, leafData, out positionInWorld))
         {
-            leaf = hit;
-            shift = x;
             return true;
         }
-        leaf = null;
-        shift = 0;
         return false;
     }
 
-    private float ToLocalSpace(Leaf leaf, float x)
-    {
-        Vector3 rootLeafWorldPosition = leaf.transform.position;
-        Vector3 leafInTreeSpace = transform.worldToLocalMatrix * rootLeafWorldPosition;
-        return x - leafInTreeSpace.x;
-    }
-
-    private Leaf TraceLeaf(float x, LeafData data)
+    private bool TraceLeaf(float x, LeafData data, out Vector3 positionInWorld)
     {
         Vector3 startPoint = new Vector3(x, height, 0) + data.mesh.bounds.center;
         startPoint = transform.TransformVector(startPoint);
@@ -94,27 +67,18 @@ public class Tree : MonoBehaviour
             LeafBackLink link = hit.collider.GetComponent<LeafBackLink>();
             if (link != null && link.link != null)
             {
-                return link.link;
+                positionInWorld = hit.point;
+                return true;
             }
         }
-        return null;
+        positionInWorld = Vector3.zero;
+        return false;
     }
 
-    private void Update()
+    public void AddLeaf(LeafData data, Vector3 worldPosition)
     {
-        /*if (Input.anyKeyDown)
-        {
-            float x = Random.Range(-50.0f, 50.0f);
-            Leaf parent = null;
-            float shift = 0;
-            if (FindBestPlace(rootLeaf, x, out parent, out shift))
-            {
-                parent.AddLeaf(Leaf.Create(rootLeaf), shift);
-            }
-        }*/
-    }
-
-    private void OnDrawGizmos()
-    {
+        Leaf leaf = Leaf.Create(data);
+        leaf.transform.SetParent(transform);
+        leaf.transform.position = worldPosition;
     }
 }
