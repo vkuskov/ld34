@@ -15,14 +15,13 @@ public class MagnetCatch : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        Debug.LogFormat("Cllide with {0}", collider);
         ScrapBackLink scrapLink = collider.GetComponent<ScrapBackLink>();
         if (scrapLink != null)
         {
             Scrap scrap = scrapLink.link;
             magnet.PullUp(scrap);
         }
-        else if (beltCollisionLayer == collider.gameObject.layer)
+        else if (collider.GetComponent<BeltTrigger>() != null)
         {
             magnet.PullUp(null);
         }
