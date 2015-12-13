@@ -10,6 +10,7 @@ public class Magnet : MonoBehaviour {
     public float horizontalSpeed = 30.0f;
     public float minPosition;
     public float maxPosition;
+    public Transform catchPoint;
     [HideInInspector]
     public Tree tree;
 
@@ -166,7 +167,7 @@ public class Magnet : MonoBehaviour {
         }
     }
 
-    public void PullUp(Scrap scrap)
+    public void PullUp(Scrap scrap, Vector3 point)
     {
         if (state == State.MoveDown)
         {
@@ -174,7 +175,8 @@ public class Magnet : MonoBehaviour {
             if (scrap != null)
             {
                 scrap.GetComponent<Mover>().enabled = false;
-                scrap.transform.SetParent(transform, true);
+                scrap.transform.SetParent(catchPoint.transform, true);
+                scrap.transform.localEulerAngles = point;
                 this.scrap = scrap;
             }
         }
