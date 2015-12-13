@@ -167,7 +167,7 @@ public class Magnet : MonoBehaviour {
         }
     }
 
-    public void PullUp(Scrap scrap, Vector3 point)
+    public void PullUp(Scrap scrap)
     {
         if (state == State.MoveDown)
         {
@@ -176,7 +176,6 @@ public class Magnet : MonoBehaviour {
             {
                 scrap.GetComponent<Mover>().enabled = false;
                 scrap.transform.SetParent(catchPoint.transform, true);
-                scrap.transform.localEulerAngles = point;
                 this.scrap = scrap;
             }
         }

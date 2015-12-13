@@ -22,7 +22,7 @@ public class Tree : MonoBehaviour
 
     public bool FindBestPlace(LeafData leafData, float x, out Vector3 positionInWorld)
     {
-        x = Mathf.Round(x);
+        x = Mathf.Round(x); 
         float searchLeft = x;
         float searchRight = x;        
         while (searchLeft > -sizeInOneSide || searchRight < sizeInOneSide)
@@ -80,5 +80,6 @@ public class Tree : MonoBehaviour
         Leaf leaf = Leaf.Create(data);
         leaf.transform.SetParent(transform);
         leaf.transform.position = worldPosition;
+        leaf.transform.localPosition = new Vector3(leaf.transform.localPosition.x, leaf.transform.localPosition.y, 0);
     }
 }
